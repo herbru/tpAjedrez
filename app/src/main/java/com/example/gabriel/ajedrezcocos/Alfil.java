@@ -1,9 +1,11 @@
 package com.example.gabriel.ajedrezcocos;
 
+import org.cocos2d.nodes.Sprite;
+
 public class Alfil extends Pieza {
 
-    public Alfil(int x, int y) {
-        super(x, y);
+    public Alfil(int x, int y, Sprite imagen) {
+        super(x, y, imagen);
     }
 
     @Override

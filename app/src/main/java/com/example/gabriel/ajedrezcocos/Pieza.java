@@ -1,20 +1,22 @@
 package com.example.gabriel.ajedrezcocos;
 
 
+import org.cocos2d.nodes.Sprite;
 
 public class Pieza {
-    private boolean blanco;
     private boolean comida;
     private int x;
     private int y;
+    private Sprite Imagen;
 
-    public Pieza( int x, int y) {
+    public Pieza( int x, int y, Sprite imagen) {
         this.comida = false;
+        this.Imagen = imagen;
         this.x = x;
         this.y = y;
     }
 
-
+    public Sprite getImagen() {return Imagen;}
     public boolean getComida() {
         return comida;
     }

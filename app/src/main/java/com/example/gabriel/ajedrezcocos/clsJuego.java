@@ -13,6 +13,7 @@ import org.cocos2d.types.CCSize;
 public class clsJuego {
     CCGLSurfaceView _VistaDelJuego;
     CCSize PantallaDelDispositivo;
+    float ladoLugar;
 
     //constructor
     clsJuego(CCGLSurfaceView VistaDelJuego) {
@@ -25,6 +26,9 @@ public class clsJuego {
         Director.sharedDirector().attachInView(_VistaDelJuego);
 
         PantallaDelDispositivo = Director.sharedDirector().displaySize();
+
+        Log.d("Comenzar" , "Saco el lado de cada lugar dividiendo el ancho de la pantalla por 8");
+        ladoLugar = PantallaDelDispositivo.getWidth()/8;
 
         Log.d("Comenzar", "Le digo al director que comience la escena");
         Director.sharedDirector().runWithScene(EscenaDelJuego());
@@ -80,7 +84,6 @@ public class clsJuego {
     }
 
     class CapaReyBlanco extends Layer {
-        Sprite ImagenReyBlanco;
 
         public CapaReyBlanco() {
             Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
@@ -89,13 +92,11 @@ public class clsJuego {
         }
 
         private void PonerImagenReyBlanco() {
-            Log.d("PonerImagenReyBlanco", "Comienzo a poner la imagen del tablero");
+            Log.d("PonerImagenReyBlanco", "Comienzo a poner la imagen del rey blanco");
 
-            Log.d("PonerImagenReyBlanco", "Instancio el sprite");
-            ImagenReyBlanco = Sprite.sprite("reyblanco.png");
 
-            Log.d("PonerImagenReyBlanco", "La ubico en elc centrod e la pantalla");
-            ImagenReyBlanco.setPosition(540, 470);
+            Log.d("PonerImagenReyBlanco", "La ubico en el centro de la pantalla");
+            ImagenReyBlanco.setPosition(0, 370);
 
             Log.d("PonerimagenTablero", "Agrando el tablero para que ocupe toda la pantalla de ancho");
             Float FactorAncho;

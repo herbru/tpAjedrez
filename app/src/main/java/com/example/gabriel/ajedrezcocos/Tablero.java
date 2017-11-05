@@ -10,7 +10,7 @@ public class Tablero {
             Log.d("ContructorTablero" , "Lleno el tablero de lugares");
             for(int i=0; i<matrizLugares.length; i++){
                 for(int j=0; j<matrizLugares.length; j++){
-                    this.matrizLugares[i][j] = new Lugar(i, j);
+                    this.matrizLugares[i][j] = new Lugar(i, j, );
                 }
             }
         }

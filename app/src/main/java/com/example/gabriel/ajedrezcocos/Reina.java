@@ -2,9 +2,11 @@ package com.example.gabriel.ajedrezcocos;
 
 import android.util.Log;
 
+import org.cocos2d.nodes.Sprite;
+
 public class Reina extends Pieza{
-        public Reina( int x, int y) {
-            super(x, y);
+        public Reina(int x, int y, Sprite imagen) {
+            super(x, y, imagen);
         }
 
         @Override

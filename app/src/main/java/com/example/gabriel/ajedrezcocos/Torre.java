@@ -1,10 +1,12 @@
 package com.example.gabriel.ajedrezcocos;
 
 
+import org.cocos2d.nodes.Sprite;
+
 public class Torre extends Pieza{
 
-    public Torre(int x, int y) {
-        super(x, y);
+    public Torre(int x, int y, Sprite imagen) {
+        super(x, y, imagen);
     }
 
 
