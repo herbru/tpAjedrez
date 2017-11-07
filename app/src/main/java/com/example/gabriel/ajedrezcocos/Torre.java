@@ -5,8 +5,8 @@ import org.cocos2d.nodes.Sprite;
 
 public class Torre extends Pieza{
 
-    public Torre(int x, int y, Sprite imagen) {
-        super(x, y, imagen);
+    public Torre(int x, int y, String nombreArchivoImagen) {
+        super(x, y, nombreArchivoImagen);
     }
 
 

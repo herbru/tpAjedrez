@@ -1,6 +1,8 @@
 package com.example.gabriel.ajedrezcocos;
 
 
+import android.util.Log;
+
 import org.cocos2d.nodes.Sprite;
 
 public class Pieza {
@@ -9,14 +11,13 @@ public class Pieza {
     private int y;
     private Sprite sprite;
 
-    public Pieza( int x, int y, Sprite imagen) {
+    public Pieza( int x, int y, String nombreArchivoImagen) {
         this.comida = false;
-        this.sprite = imagen;
+        sprite = Sprite.sprite(nombreArchivoImagen);
         this.x = x;
         this.y = y;
     }
 
-    public Sprite getImagen() {return sprite;}
     public boolean getComida() {
         return comida;
     }
@@ -35,6 +36,8 @@ public class Pieza {
     public void setY(int y) {
         this.y = y;
     }
+    public Sprite getSprite() {return sprite;}
+    public void setSprite(Sprite sprite) {this.sprite = sprite;}
 
     public boolean movidaValida(Tablero tablero, int desdeX, int desdeY, int haciaX, int haciaY){
         if(haciaX == desdeX && haciaY == desdeY)

@@ -7,23 +7,15 @@ import org.cocos2d.nodes.Sprite;
 public class Lugar {
     int x;
     int y;
-    float pixelx;
-    float pixely;
     Sprite sprite;
     Pieza pieza;
 
     public Lugar(int x, int y, String nombreArchivoSprite) {
-
         sprite = Sprite.sprite(nombreArchivoSprite);
         this.x = x;
         this.y = y;
         pieza = null;
     }
-
-    public void setPixelx(float pixelx) {this.pixelx = pixelx;}
-    public float getPixelx() {return pixelx;}
-    public void setPixely(float pixely) {this.pixely = pixely;}
-    public float getPixely() {return pixely;}
 
     public void OcuparLugar(Pieza pieza){
         Log.d("OcuparLugar" , "Si hay una pieza en ese lugar la como");

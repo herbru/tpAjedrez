@@ -5,8 +5,8 @@ import android.util.Log;
 import org.cocos2d.nodes.Sprite;
 
 public class Reina extends Pieza{
-        public Reina(int x, int y, Sprite imagen) {
-            super(x, y, imagen);
+        public Reina(int x, int y, String nombreArchivoImagen) {
+            super(x, y, nombreArchivoImagen);
         }
 
         @Override

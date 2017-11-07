@@ -4,8 +4,8 @@ import org.cocos2d.nodes.Sprite;
 
 public class Alfil extends Pieza {
 
-    public Alfil(int x, int y, Sprite imagen) {
-        super(x, y, imagen);
+    public Alfil(int x, int y, String nombreArchivoImagen) {
+        super(x, y, nombreArchivoImagen);
     }
 
     @Override

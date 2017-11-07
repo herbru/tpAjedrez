@@ -57,10 +57,11 @@ public class clsJuego {
         CapaTablero miCapaTablero = new CapaTablero();
 
         Log.d("EscenaDelFondo", "declaro e instancio la capa que va a contener el rey blanco");
-        //CapaReyBlanco miCapaReyBlanco = new CapaReyBlanco();
+        CapaReyBlanco miCapaReyBlanco = new CapaReyBlanco();
 
         Log.d("EscenaADevolver", "Agrego a la escena la capa del fondo y la del frente");
         escenaADevolver.addChild(miCapaTablero, -10);
+        escenaADevolver.addChild(miCapaReyBlanco, 10);
 
         Log.d("EscenaADevolver", "Devuelvo al escena ya armada");
         return escenaADevolver;
@@ -110,16 +111,16 @@ public class clsJuego {
             Log.d("PonerImagenReyBlanco", "Comienzo a poner la imagen del rey blanco");
 
             Log.d("PonerImagenReyBlanco", "Obtengo la posicion en la que tengo que poner la pieza");
-            float PosicionX = tablero.getLugar(0,4).sprite.getPositionX();
-            float PosicionY = tablero.getLugar(0,4).sprite.getPositionY();
+            float PosicionX = tablero.getLugar(4,0).sprite.getPositionX();
+            float PosicionY = tablero.getLugar(4,0).sprite.getPositionY();
+            Log.d("PonerImagenesTablero", "obtengo el factor por el que tengo que agrandar al sprite para que ocupe 2/3 del ancho del lugar");
+            float FactorAncho = ((PantallaDelDispositivo.getWidth()/8)*(2/3)) / (tablero.getLugar(4,0).pieza.getSprite().getWidth());
 
-            float FactorAncho = ((PantallaDelDispositivo.getWidth()/8)/(3/2)) / (tablero.getLugar(0 , 4).pieza.);
+            tablero.getLugar(4,0).pieza.getSprite().runAction(ScaleBy.action(0.01f, FactorAncho, FactorAncho));
 
-            tablero.getLugar(0,4).sprite.runAction(ScaleBy.action(0.01f, FactorAncho, FactorAncho));
-
-            tablero.getLugar(0,4).sprite.setPosition();
+            tablero.getLugar(4,0).pieza.getSprite().setPosition(tablero.getLugar(4,0).sprite.getPositionX(),tablero.getLugar(4,0).sprite.getPositionY());
             Log.d("PonerImagenReyBlanco", "Lo agrego a la capa");
-            super.addChild(ImagenReyBlanco);
+            super.addChild(tablero.getLugar(4,0).pieza.getSprite());
         }
-    }*/
+    }
 }
