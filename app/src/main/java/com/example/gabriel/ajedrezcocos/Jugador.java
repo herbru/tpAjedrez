@@ -14,7 +14,7 @@ public class Jugador {
         //sprites de piezas
         private final Sprite reyBlanco = Sprite.sprite("reyblanco.png");
         private final Sprite reyNegro = Sprite.sprite("reynegro.png");
-        private final Sprite alfilBlanco = Sprite.sprite("afilnegro.png");
+        private final Sprite alfilBlanco = Sprite.sprite("alfilnegro.png");
         private final Sprite alfilNegro = Sprite.sprite("alfilnegro.png");
         private final Sprite caballoBlanco = Sprite.sprite("caballoblanco.png");
         private final Sprite caballoNegro = Sprite.sprite("caballonegro.png");

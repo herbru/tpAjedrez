@@ -7,16 +7,16 @@ public class Pieza {
     private boolean comida;
     private int x;
     private int y;
-    private Sprite Imagen;
+    private Sprite sprite;
 
     public Pieza( int x, int y, Sprite imagen) {
         this.comida = false;
-        this.Imagen = imagen;
+        this.sprite = imagen;
         this.x = x;
         this.y = y;
     }
 
-    public Sprite getImagen() {return Imagen;}
+    public Sprite getImagen() {return sprite;}
     public boolean getComida() {
         return comida;
     }
