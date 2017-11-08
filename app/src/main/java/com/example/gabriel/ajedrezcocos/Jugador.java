@@ -27,7 +27,7 @@ public class Jugador {
             if(this.blanco == true){
                 Log.d("inicializarPiezas" , "si el jugador es blancas agrego las piezas blancas a la lista");
                 for(int i=0; i<PEONES; i++){
-                    arrayPiezasJugador.add(new Peon(i,2,"peonblanco.png"));
+                    arrayPiezasJugador.add(new Peon(i,1,"peonblanco.png"));
                 }
                 arrayPiezasJugador.add(new Torre(0, 0, "torreblanca.png"));
                 arrayPiezasJugador.add(new Torre(7, 0, "torreblanca.png"));
