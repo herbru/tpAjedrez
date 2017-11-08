@@ -40,7 +40,7 @@ public class Ajedrez {
         for(int i=0; i<negras.getPiezas().size(); i++){
             Log.d("InicializarTablero" , "obtengo el lugar que debe ocupar la pieza y lo ocupo");
             tablero.getLugar(negras.getPiezas().get(i).getX(), negras.getPiezas().get(i).getY()).OcuparLugar(negras.getPiezas().get(i));
-            tablero.getLugar(blancas.getPiezas().get(i).getX(), blancas.getPiezas().get(i).getY()).OcuparLugar(negras.getPiezas().get(i));
+            tablero.getLugar(blancas.getPiezas().get(i).getX(), blancas.getPiezas().get(i).getY()).OcuparLugar(blancas.getPiezas().get(i));
         }
         return true;
     }

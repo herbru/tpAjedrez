@@ -2,8 +2,6 @@ package com.example.gabriel.ajedrezcocos;
 
 import android.util.Log;
 
-import org.cocos2d.nodes.Sprite;
-
 public class Rey extends Pieza{
 
     public Rey(int x, int y, String nombreArchivoImagen) {

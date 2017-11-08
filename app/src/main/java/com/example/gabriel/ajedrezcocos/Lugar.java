@@ -3,7 +3,7 @@ package com.example.gabriel.ajedrezcocos;
 import android.util.Log;
 
 import org.cocos2d.nodes.Sprite;
-//Todo mostrar el el rey blanco
+
 public class Lugar {
     int x;
     int y;
