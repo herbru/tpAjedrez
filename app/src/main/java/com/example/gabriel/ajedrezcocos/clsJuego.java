@@ -1,6 +1,7 @@
 package com.example.gabriel.ajedrezcocos;
 
 import android.util.Log;
+import android.view.MotionEvent;
 
 import org.cocos2d.actions.interval.RotateBy;
 import org.cocos2d.actions.interval.ScaleBy;
@@ -11,7 +12,10 @@ import org.cocos2d.nodes.Sprite;
 import org.cocos2d.opengl.CCGLSurfaceView;
 import org.cocos2d.types.CCSize;
 
+import java.util.EventObject;
+
 public class clsJuego {
+    Scene escenaADevolver;
     CCGLSurfaceView _VistaDelJuego;
     CCSize PantallaDelDispositivo;
     float ladoLugar;
@@ -54,47 +58,15 @@ public class clsJuego {
         Log.d("EscenaDelJuego", "Comienza el armado de la escena del juego");
 
         Log.d("Escena del juego", "Declaro e instancio la escena en si");
-        Scene escenaADevolver = Scene.node();
+        escenaADevolver = Scene.node();
 
         Log.d("EscenaDelJuego", "Declaro e instancio la capa que va a contener la imagen del fondo");
         CapaTablero miCapaTablero = new CapaTablero();
-
-        Log.d("EscenaDelFondo", "declaro e instancio la capa que va a contener el rey blanco");
-        CapaReyBlanco miCapaReyBlanco = new CapaReyBlanco();
-        CapaTorreBlanca1 miCapaTorreBlanca1 = new CapaTorreBlanca1();
-        CapaTorreBlanca2 miCapaTorreBlanca2 = new CapaTorreBlanca2();
-        CapaAlfilBlanco1 miCapaAlfilBlanco1 = new CapaAlfilBlanco1();
-        CapaAlfilBlanco2 miCapaAlfilBlanco2 = new CapaAlfilBlanco2();
-        CapaCaballoBlanco1 miCapaCaballoblanco1 = new CapaCaballoBlanco1();
-        CapaCaballoBlanco2 miCapaCaballoBlanco2 = new CapaCaballoBlanco2();
-        CapaReinaBlanca miCapaReinaBlanca = new CapaReinaBlanca();
-        CapaPeonBlanco1 miCapaPeonBlanco1 = new CapaPeonBlanco1();
-        CapaPeonBlanco2 miCapaPeonBlanco2 = new CapaPeonBlanco2();
-        CapaPeonBlanco3 miCapaPeonBlanco3 = new CapaPeonBlanco3();
-        CapaPeonBlanco4 miCapaPeonBlanco4 = new CapaPeonBlanco4();
-        CapaPeonBlanco5 miCapaPeonBlanco5 = new CapaPeonBlanco5();
-        CapaPeonBlanco6 miCapaPeonBlanco6 = new CapaPeonBlanco6();
-        CapaPeonBlanco7 miCapaPeonBlanco7 = new CapaPeonBlanco7();
-        CapaPeonBlanco8 miCapaPeonBlanco8 = new CapaPeonBlanco8();
+        CapaPiezas miCapaPiezas = new CapaPiezas();
 
         Log.d("EscenaADevolver", "Agrego a la escena la capa del fondo y la del frente");
         escenaADevolver.addChild(miCapaTablero, -10);
-        escenaADevolver.addChild(miCapaReyBlanco, 10);
-        escenaADevolver.addChild(miCapaTorreBlanca1, 10);
-        escenaADevolver.addChild(miCapaTorreBlanca2, 10);
-        escenaADevolver.addChild(miCapaAlfilBlanco1, 10);
-        escenaADevolver.addChild(miCapaAlfilBlanco2, 10);
-        escenaADevolver.addChild(miCapaCaballoblanco1, 10);
-        escenaADevolver.addChild(miCapaCaballoBlanco2, 10);
-        escenaADevolver.addChild(miCapaReinaBlanca, 10);
-        escenaADevolver.addChild(miCapaPeonBlanco1, 10);
-        escenaADevolver.addChild(miCapaPeonBlanco2, 10);
-        escenaADevolver.addChild(miCapaPeonBlanco3, 10);
-        escenaADevolver.addChild(miCapaPeonBlanco4, 10);
-        escenaADevolver.addChild(miCapaPeonBlanco5, 10);
-        escenaADevolver.addChild(miCapaPeonBlanco6, 10);
-        escenaADevolver.addChild(miCapaPeonBlanco7, 10);
-        escenaADevolver.addChild(miCapaPeonBlanco8, 10);
+        escenaADevolver.addChild(miCapaPiezas, 10);
 
         Log.d("EscenaADevolver", "Devuelvo al escena ya armada");
         return escenaADevolver;
@@ -132,319 +104,126 @@ public class clsJuego {
         }
     }
 
-    class CapaReyBlanco extends Layer {
-
-        public CapaReyBlanco() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenReyBlanco();
+    class CapaPiezas extends Layer {
+        private int desdeX;
+        private int desdeY;
+        @Override
+        public boolean ccTouchesBegan(MotionEvent event) {
+            if (event.getX() > tablero.getLugar(0,0).sprite.getPositionX() && PantallaDelDispositivo.getHeight() - event.getY() > tablero.getLugar(0,0).sprite.getPositionY()) {
+                desdeX = (int) Math.floor(event.getX() / ladoLugar);
+                desdeY = (int) Math.floor((PantallaDelDispositivo.getHeight() - event.getY()) / ladoLugar);
+                Log.d("cctouchesbegan", ""+desdeX);
+                Log.d("cctouchesbegan" , ""+desdeY);
+            }
+            return true;
+        }
+        @Override
+        public boolean ccTouchesMoved(MotionEvent event){
+            tablero.getLugar(desdeX,desdeY).pieza.getSprite().setPosition(event.getX(), PantallaDelDispositivo.getHeight() - event.getY());
+            return true;
         }
 
-        private void PonerImagenReyBlanco() {
-            Log.d("PonerImagenReyBlanco", "Comienzo a poner la imagen del rey blanco");
+        @Override public boolean ccTouchesEnded (MotionEvent event){
+            if (event.getX() > tablero.getLugar(0,0).sprite.getPositionX() && PantallaDelDispositivo.getHeight() - event.getY() > tablero.getLugar(0,0).sprite.getPositionY())
+            {
+                int HaciaX = (int) Math.floor(event.getX() / ladoLugar);
+                int HaciaY = (int) Math.floor((PantallaDelDispositivo.getHeight() - event.getY()) / ladoLugar);
 
-            Log.d("PonerImagenReyBlanco", "Obtengo la posicion en la que tengo que poner la pieza");
-            float PosicionX = tablero.getLugar(4,0).sprite.getPositionX();
-            float PosicionY = tablero.getLugar(4,0).sprite.getPositionY();
+                if (InterseccionEntreSprites(tablero.getLugar(desdeX,desdeY).pieza.getSprite(), tablero.getLugar(HaciaX, HaciaY).sprite)) {
+                    if (tablero.getLugar(desdeX, desdeY).pieza.movidaValida(tablero, desdeX, desdeY, HaciaX, HaciaY,jugadorBlancas )) {
+                        tablero.getLugar(HaciaX, HaciaY).OcuparLugar(tablero.getLugar(desdeX,desdeY).pieza);
+                    }
+                }
+            }
+            return true;
+        }
+
+        public CapaPiezas(){
+            this.setIsTouchEnabled(true);
+            for(int i=0; i<tablero.matrizLugares.length; i++){
+                for(int j=0; j<tablero.matrizLugares.length; j++){
+                    if (j<2 || j>5) {
+                        PonerImagenPieza(i, j);
+                    }
+                }
+            }
+        }
+        public void PonerImagenPieza(int x , int y){
             Log.d("PonerImagenesTablero", "obtengo el factor por el que tengo que agrandar al sprite para que ocupe el 85% del ancho del lugar");
-            float FactorAncho = (ladoLugar * 0.85f) / (tablero.getLugar(4,0).pieza.getSprite().getWidth());
+            Log.d("PonerImagenPieza", "ladolugar:"+ladoLugar+"ancho pieza:"+tablero.getLugar(x,y).pieza.getSprite().getWidth());
+            float FactorAncho = (ladoLugar * 0.85f) / (tablero.getLugar(x,y).pieza.getSprite().getWidth());
             Log.d("PonerImagenesTablero" , "factor"+FactorAncho);
+            tablero.getLugar(x,y).pieza.getSprite().runAction(ScaleBy.action(0.01f, FactorAncho));
 
-            tablero.getLugar(4,0).pieza.getSprite().runAction(ScaleBy.action(0.01f, FactorAncho));
-
-            tablero.getLugar(4,0).pieza.getSprite().setPosition(tablero.getLugar(4,0).sprite.getPositionX(),tablero.getLugar(4,0).sprite.getPositionY());
-            Log.d("PonerImagenesTablero" , ""+tablero.getLugar(4,0).sprite.getPositionX() + " "+tablero.getLugar(4,0).sprite.getPositionY());
-            Log.d("PonerImagenReyBlanco", "Lo agrego a la capa");
-            super.addChild(tablero.getLugar(4,0).pieza.getSprite());
-        }
-    }
-
-    class CapaTorreBlanca1 extends Layer {
-
-        public CapaTorreBlanca1() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenTorreBlanca1();
-        }
-
-        private void PonerImagenTorreBlanca1() {
-            Log.d("PonerImagenReyBlanco", "Comienzo a poner la imagen del rey blanco");
-
-            Log.d("PonerImagenReyBlanco", "Obtengo la posicion en la que tengo que poner la pieza");
-            float PosicionX = tablero.getLugar(0,0).sprite.getPositionX();
-            float PosicionY = tablero.getLugar(0,0).sprite.getPositionY();
-            Log.d("PonerImagenesTablero", "obtengo el factor por el que tengo que agrandar al sprite para que ocupe el 85% del ancho del lugar");
-            float FactorAncho = (ladoLugar * 0.85f) / (tablero.getLugar(0,0).pieza.getSprite().getWidth());
-            Log.d("PonerImagenesTablero" , "factor"+FactorAncho);
-
-            tablero.getLugar(0,0).pieza.getSprite().runAction(ScaleBy.action(0.01f, FactorAncho));
-
-            tablero.getLugar(0,0).pieza.getSprite().setPosition(tablero.getLugar(0,0).sprite.getPositionX(),tablero.getLugar(0,0).sprite.getPositionY());
-            Log.d("PonerImagenesTablero" , ""+tablero.getLugar(0,0).sprite.getPositionX() + " "+tablero.getLugar(0,0).sprite.getPositionY());
-            Log.d("PonerImagenReyBlanco", "Lo agrego a la capa");
-            super.addChild(tablero.getLugar(0,0).pieza.getSprite());
+            tablero.getLugar(x,y).pieza.getSprite().setPosition(tablero.getLugar(x,y).sprite.getPositionX(),tablero.getLugar(x,y).sprite.getPositionY());
+            Log.d("PonerImagenesTablero" , ""+tablero.getLugar(x,y).sprite.getPositionX() + " "+tablero.getLugar(x,y).sprite.getPositionY());
+            super.addChild(tablero.getLugar(x,y).pieza.getSprite());
         }
     }
 
 
-    class CapaTorreBlanca2 extends Layer {
 
-        public CapaTorreBlanca2() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenTorreBlanca2();
+    public static boolean EstaEntre(int NumeroAComparar, int NumeroMenor, int NumeroMayor){
+        boolean Devolver;
+
+        Log.d("EstaEntre" , "Numeromenor: "+NumeroMenor+" - NumeroMayor:"+NumeroMayor);
+
+        if (NumeroMenor > NumeroMayor){
+            Log.d("EstaEntre" , "Me los dieron invertidos los ordeno");
+            int Auxiliar;
+            Auxiliar = NumeroMayor;
+            NumeroMayor = NumeroMenor;
+            NumeroMenor = Auxiliar;
         }
 
-        private void PonerImagenTorreBlanca2() {
-            Log.d("PonerImagenReyBlanco", "Comienzo a poner la imagen del rey blanco");
-
-            Log.d("PonerImagenesTablero", "obtengo el factor por el que tengo que agrandar al sprite para que ocupe el 85% del ancho del lugar");
-            float FactorAncho = (ladoLugar * 0.85f) / (tablero.getLugar(7,0).pieza.getSprite().getWidth());
-            Log.d("PonerImagenesTablero" , "factor"+FactorAncho);
-
-            tablero.getLugar(7,0).pieza.getSprite().runAction(ScaleBy.action(0.01f, FactorAncho));
-
-            tablero.getLugar(7,0).pieza.getSprite().setPosition(tablero.getLugar(7,0).sprite.getPositionX(),tablero.getLugar(7,0).sprite.getPositionY());
-            Log.d("PonerImagenesTablero" , ""+tablero.getLugar(7,0).sprite.getPositionX() + " "+tablero.getLugar(7,0).sprite.getPositionY());
-            Log.d("PonerImagenReyBlanco", "Lo agrego a la capa");
-            super.addChild(tablero.getLugar(7,0).pieza.getSprite());
+        if (NumeroAComparar >= NumeroMenor && NumeroAComparar<= NumeroMayor){
+            Log.d("EstaEntre" , "EstaEntre");
+            Devolver = true;
         }
+        else{
+            Log.d("EstaEntre" , "No esta entre");
+            Devolver = false;
+        }
+        return Devolver;
     }
 
-    class CapaAlfilBlanco1 extends Layer {
 
-        public CapaAlfilBlanco1() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenAlfilBlanco1();
+    private boolean InterseccionEntreSprites(Sprite Sprite1, Sprite Sprite2) {
+        boolean Devolver = false;
+
+        int Sprite1Izquierda, Sprite1Derecha, Sprite1Abajo, Sprite1Arriba;
+        int Sprite2Izquierda, Sprite2Derecha, Sprite2Abajo, Sprite2Arriba;
+
+        Sprite1Izquierda = (int) (Sprite1.getPositionX() - Sprite1.getWidth() / 2);
+        Sprite1Derecha = (int) (Sprite1.getPositionX() + Sprite1.getWidth() / 2);
+        Sprite1Abajo = (int) (Sprite1.getPositionY() - Sprite1.getHeight() / 2);
+        Sprite1Arriba = (int) (Sprite1.getPositionY() + Sprite1.getHeight() / 2);
+
+        Sprite2Izquierda = (int) (Sprite2.getPositionX() - Sprite2.getWidth() / 2);
+        Sprite2Derecha = (int) (Sprite2.getPositionX() + Sprite2.getWidth() / 2);
+        Sprite2Abajo = (int) (Sprite2.getPositionY() - Sprite2.getHeight() / 2);
+        Sprite2Arriba = (int) (Sprite2.getPositionY() + Sprite2.getHeight() / 2);
+
+        Log.d("interseccion", "Sp1 - Izq: " + Sprite1Izquierda + " -Der: " + Sprite1Derecha + "- Aba:" + Sprite1Abajo + "-Arr:" + Sprite1Arriba);
+        Log.d("interseccion", "Sp2 - Izq: " + Sprite2Izquierda + " -Der: " + Sprite2Derecha + "- Aba:" + Sprite2Abajo + "-Arr:" + Sprite2Arriba);
+
+        //borde izq y borde inf de Sprite1 esta dentro de Sprite2
+        if (EstaEntre(Sprite1Izquierda, Sprite2Izquierda, Sprite2Derecha)&& EstaEntre(Sprite1Abajo, Sprite2Abajo, Sprite2Arriba)){
+            Log.d("Interseccion" , "1");
+            //borde izq y borde sup de Sprite1 esta dentro de Sprite2
+            if (EstaEntre(Sprite1Izquierda, Sprite2Izquierda,Sprite2Derecha)&&EstaEntre(Sprite1Arriba, Sprite2Abajo,Sprite2Arriba)){
+                Log.d("Interseccion" , "2");
+                //borde der y borde sup de Sprite1 esta dentro de Sprite2
+                if (EstaEntre(Sprite1Derecha, Sprite2Izquierda, Sprite2Derecha) && EstaEntre(Sprite1Arriba, Sprite2Abajo, Sprite2Arriba)) {
+                    Log.d("Interseccion" , "3");
+                    //borde der y borde inf de Sprite1 esta dentro de sprite 2
+                    if (EstaEntre(Sprite1Derecha, Sprite2Izquierda, Sprite2Derecha) && EstaEntre(Sprite1Abajo, Sprite2Abajo, Sprite2Arriba)){
+                        Log.d("Interseccion" , "4");
+                        Devolver = true;
+                    }
+                }
+            }
         }
-
-        private void PonerImagenAlfilBlanco1() {
-            Log.d("PonerImagenReyBlanco", "Comienzo a poner la imagen del rey blanco");
-
-            Log.d("PonerImagenesTablero", "obtengo el factor por el que tengo que agrandar al sprite para que ocupe el 85% del ancho del lugar");
-            float FactorAncho = (ladoLugar * 0.85f) / (tablero.getLugar(2,0).pieza.getSprite().getWidth());
-            Log.d("PonerImagenesTablero" , "factor"+FactorAncho);
-
-            tablero.getLugar(2,0).pieza.getSprite().runAction(ScaleBy.action(0.01f, FactorAncho));
-
-            tablero.getLugar(2,0).pieza.getSprite().setPosition(tablero.getLugar(2,0).sprite.getPositionX(),tablero.getLugar(2,0).sprite.getPositionY());
-            Log.d("PonerImagenesTablero" , ""+tablero.getLugar(2,0).sprite.getPositionX() + " "+tablero.getLugar(2,0).sprite.getPositionY());
-            Log.d("PonerImagenReyBlanco", "Lo agrego a la capa");
-            super.addChild(tablero.getLugar(2,0).pieza.getSprite());
-        }
-    }
-
-    class CapaAlfilBlanco2 extends Layer {
-
-        public CapaAlfilBlanco2() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenAlfilBlanco2();
-        }
-
-        private void PonerImagenAlfilBlanco2() {
-            Log.d("PonerImagenReyBlanco", "Comienzo a poner la imagen del rey blanco");
-
-            Log.d("PonerImagenesTablero", "obtengo el factor por el que tengo que agrandar al sprite para que ocupe el 85% del ancho del lugar");
-            float FactorAncho = (ladoLugar * 0.85f) / (tablero.getLugar(5,0).pieza.getSprite().getWidth());
-            Log.d("PonerImagenesTablero" , "factor"+FactorAncho);
-
-            tablero.getLugar(5,0).pieza.getSprite().runAction(ScaleBy.action(0.01f, FactorAncho));
-
-            tablero.getLugar(5,0).pieza.getSprite().setPosition(tablero.getLugar(5,0).sprite.getPositionX(),tablero.getLugar(5,0).sprite.getPositionY());
-            Log.d("PonerImagenesTablero" , ""+tablero.getLugar(5,0).sprite.getPositionX() + " "+tablero.getLugar(5,0).sprite.getPositionY());
-            Log.d("PonerImagenReyBlanco", "Lo agrego a la capa");
-            super.addChild(tablero.getLugar(5,0).pieza.getSprite());
-        }
-    }
-
-    class CapaCaballoBlanco1 extends Layer {
-
-        public CapaCaballoBlanco1() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenCaballoBlanco1();
-        }
-
-        private void PonerImagenCaballoBlanco1() {
-            Log.d("PonerImagenReyBlanco", "Comienzo a poner la imagen del rey blanco");
-
-            Log.d("PonerImagenesTablero", "obtengo el factor por el que tengo que agrandar al sprite para que ocupe el 85% del ancho del lugar");
-            float FactorAncho = (ladoLugar * 0.85f) / (tablero.getLugar(1,0).pieza.getSprite().getWidth());
-            Log.d("PonerImagenesTablero" , "factor"+FactorAncho);
-
-            tablero.getLugar(1,0).pieza.getSprite().runAction(ScaleBy.action(0.01f, FactorAncho));
-
-            tablero.getLugar(1,0).pieza.getSprite().setPosition(tablero.getLugar(1,0).sprite.getPositionX(),tablero.getLugar(1,0).sprite.getPositionY());
-            Log.d("PonerImagenesTablero" , ""+tablero.getLugar(1,0).sprite.getPositionX() + " "+tablero.getLugar(1,0).sprite.getPositionY());
-            Log.d("PonerImagenReyBlanco", "Lo agrego a la capa");
-            super.addChild(tablero.getLugar(1,0).pieza.getSprite());
-        }
-    }
-
-    class CapaCaballoBlanco2 extends Layer {
-
-        public CapaCaballoBlanco2() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenCaballoBlanco2();
-        }
-
-        private void PonerImagenCaballoBlanco2() {
-            Log.d("PonerImagenReyBlanco", "Comienzo a poner la imagen del rey blanco");
-
-            Log.d("PonerImagenesTablero", "obtengo el factor por el que tengo que agrandar al sprite para que ocupe el 85% del ancho del lugar");
-            float FactorAncho = (ladoLugar * 0.85f) / (tablero.getLugar(6,0).pieza.getSprite().getWidth());
-            Log.d("PonerImagenesTablero" , "factor"+FactorAncho);
-
-            tablero.getLugar(6,0).pieza.getSprite().runAction(ScaleBy.action(0.01f, FactorAncho));
-
-            tablero.getLugar(6,0).pieza.getSprite().setPosition(tablero.getLugar(6,0).sprite.getPositionX(),tablero.getLugar(6,0).sprite.getPositionY());
-            Log.d("PonerImagenesTablero" , ""+tablero.getLugar(6,0).sprite.getPositionX() + " "+tablero.getLugar(6,0).sprite.getPositionY());
-            Log.d("PonerImagenReyBlanco", "Lo agrego a la capa");
-            super.addChild(tablero.getLugar(6,0).pieza.getSprite());
-        }
-    }
-
-    class CapaReinaBlanca extends Layer {
-
-        public CapaReinaBlanca() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenReinaBlanca();
-        }
-
-        private void PonerImagenReinaBlanca() {
-            Log.d("PonerImagenReyBlanco", "Comienzo a poner la imagen del rey blanco");
-
-            Log.d("PonerImagenesTablero", "obtengo el factor por el que tengo que agrandar al sprite para que ocupe el 85% del ancho del lugar");
-            float FactorAncho = (ladoLugar * 0.85f) / (tablero.getLugar(3,0).pieza.getSprite().getWidth());
-            Log.d("PonerImagenesTablero" , "factor"+FactorAncho);
-
-            tablero.getLugar(3,0).pieza.getSprite().runAction(ScaleBy.action(0.01f, FactorAncho));
-
-            tablero.getLugar(3,0).pieza.getSprite().setPosition(tablero.getLugar(3,0).sprite.getPositionX(),tablero.getLugar(3,0).sprite.getPositionY());
-            Log.d("PonerImagenesTablero" , ""+tablero.getLugar(3,0).sprite.getPositionX() + " "+tablero.getLugar(3,0).sprite.getPositionY());
-            Log.d("PonerImagenReyBlanco", "Lo agrego a la capa");
-            super.addChild(tablero.getLugar(3,0).pieza.getSprite());
-        }
-    }
-
-    class CapaPeonBlanco1 extends Layer {
-
-        public CapaPeonBlanco1() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenPeonBlanco1();
-        }
-
-        private void PonerImagenPeonBlanco1() {
-            Log.d("PonerImagenReyBlanco", "Comienzo a poner la imagen del rey blanco");
-
-            Log.d("PonerImagenesTablero", "obtengo el factor por el que tengo que agrandar al sprite para que ocupe el 85% del ancho del lugar");
-            float FactorAncho = (ladoLugar * 0.85f) / (tablero.getLugar(0,1).pieza.getSprite().getWidth());
-            Log.d("PonerImagenesTablero" , "factor"+FactorAncho);
-
-            tablero.getLugar(0,1).pieza.getSprite().runAction(ScaleBy.action(0.01f, FactorAncho));
-
-            tablero.getLugar(0,1).pieza.getSprite().setPosition(tablero.getLugar(0,1).sprite.getPositionX(),tablero.getLugar(0,1).sprite.getPositionY());
-            Log.d("PonerImagenesTablero" , ""+tablero.getLugar(0,1).sprite.getPositionX() + " "+tablero.getLugar(0,1).sprite.getPositionY());
-            Log.d("PonerImagenReyBlanco", "Lo agrego a la capa");
-            super.addChild(tablero.getLugar(0,1).pieza.getSprite());
-        }
-    }
-
-    class CapaPeonBlanco2 extends Layer {
-
-        public CapaPeonBlanco2() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenPieza(1,1,true);
-            super.addChild(tablero.getLugar(1, 1).pieza.getSprite());
-        }
-    }
-
-    class CapaPeonBlanco3 extends Layer {
-
-        public CapaPeonBlanco3() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenPieza(2,1,true);
-            super.addChild(tablero.getLugar(2,1).pieza.getSprite());
-        }
-    }
-
-    class CapaPeonBlanco4 extends Layer {
-
-        public CapaPeonBlanco4() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenPieza(3,1,true);
-            super.addChild(tablero.getLugar(3,1).pieza.getSprite());
-        }
-    }
-
-    class CapaPeonBlanco5 extends Layer {
-
-        public CapaPeonBlanco5() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenPieza(4,1,true);
-            super.addChild(tablero.getLugar(4,1).pieza.getSprite());
-        }
-    }
-
-    class CapaPeonBlanco6 extends Layer {
-
-        public CapaPeonBlanco6() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenPieza(5,1,true);
-            super.addChild(tablero.getLugar(5,1).pieza.getSprite());
-        }
-    }
-
-    class CapaPeonBlanco7 extends Layer {
-
-        public CapaPeonBlanco7() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenPieza(6,1, true);
-            super.addChild(tablero.getLugar(6,1).pieza.getSprite());
-        }
-    }
-
-    class CapaPeonBlanco8 extends Layer {
-
-        public CapaPeonBlanco8() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenPieza(7,1, true);
-            super.addChild(tablero.getLugar(7,1).pieza.getSprite());
-        }
-    }
-
-    class CapaReynegro extends Layer {
-
-        public CapaReynegro() {
-            Log.d("CapaReyBlanco", "Comienza el constructor de CapaTablero");
-            Log.d("CapaReyBlanco", "Pongo la imagen del rey blanco");
-            PonerImagenPieza(7,1, true);
-            super.addChild(tablero.getLugar(7,1).pieza.getSprite());
-        }
-    }
-
-    public void PonerImagenPieza(int x , int y, boolean blanca){
-        Log.d("PonerImagenesTablero", "obtengo el factor por el que tengo que agrandar al sprite para que ocupe el 85% del ancho del lugar");
-        float FactorAncho = (ladoLugar * 0.85f) / (tablero.getLugar(x,y).pieza.getSprite().getWidth());
-        Log.d("PonerImagenesTablero" , "factor"+FactorAncho);
-        if (blanca){
-            tablero.getLugar(x,y).pieza.getSprite().runAction(RotateBy.action(0.01f, 180f));
-        }
-        tablero.getLugar(x,y).pieza.getSprite().runAction(ScaleBy.action(0.01f, FactorAncho));
-
-        tablero.getLugar(x,y).pieza.getSprite().setPosition(tablero.getLugar(x,y).sprite.getPositionX(),tablero.getLugar(x,y).sprite.getPositionY());
-        Log.d("PonerImagenesTablero" , ""+tablero.getLugar(x,y).sprite.getPositionX() + " "+tablero.getLugar(x,y).sprite.getPositionY());
+        return Devolver;
     }
 }

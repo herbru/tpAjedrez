@@ -9,8 +9,8 @@ public class Rey extends Pieza{
     }
 
     @Override
-    public boolean movidaValida(Tablero tablero, int desdeX, int desdeY, int hastaX, int hastaY) {
-        if(super.movidaValida(tablero, desdeX, desdeY, hastaX, hastaY) == false) {
+    public boolean movidaValida(Tablero tablero, int desdeX, int desdeY, int hastaX, int hastaY, Jugador jugador) {
+        if(super.movidaValida(tablero, desdeX, desdeY, hastaX, hastaY, jugador) == false) {
             Log.d("esValida" , "si para la clase Pieza no es valida la movida, devuelve false");
             return false;
         }

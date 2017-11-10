@@ -12,17 +12,24 @@ public class Jugador {
         public boolean blanco;
         public final int PEONES = 8;
 
+        private boolean miTurno = false;
         private ArrayList<Pieza> arrayPiezasJugador = new ArrayList<>();
 
         public Jugador(boolean blanco) {
             this.blanco = blanco;
+            if (this.blanco){
+                this.miTurno = true;
+            }
         }
 
         public ArrayList<Pieza> getPiezas() {
             return arrayPiezasJugador;
         }
 
-        public void incializarPiezas(){
+    public void setMiTurno(boolean miTurno) {this.miTurno = miTurno;}
+    public boolean getMiTurno(){return miTurno;}
+
+    public void incializarPiezas(){
             Log.d("inicializarpiezas" , "Agrego las piezas a la lista de piezas del jugador");
             if(this.blanco == true){
                 Log.d("inicializarPiezas" , "si el jugador es blancas agrego las piezas blancas a la lista");
@@ -53,5 +60,5 @@ public class Jugador {
                 arrayPiezasJugador.add(new Reina(3, 7, "reinanegra.png"));
             }
 
-        }
+    }
 }

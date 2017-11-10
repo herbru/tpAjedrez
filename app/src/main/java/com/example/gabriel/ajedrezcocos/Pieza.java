@@ -39,11 +39,16 @@ public class Pieza {
     public Sprite getSprite() {return sprite;}
     public void setSprite(Sprite sprite) {this.sprite = sprite;}
 
-    public boolean movidaValida(Tablero tablero, int desdeX, int desdeY, int haciaX, int haciaY){
-        if(haciaX == desdeX && haciaY == desdeY)
-            return false; //cannot move nothing
-        if(haciaX < 0 || haciaX > 7 || desdeX < 0 || desdeX > 7 || haciaX < 0 || haciaX > 7 || desdeY <0 || desdeY > 7)
+    public boolean movidaValida(Tablero tablero, int desdeX, int desdeY, int haciaX, int haciaY, Jugador jugador){
+        if(haciaX == desdeX && haciaY == desdeY) {
+            return false; //no se puede no mover
+        }
+        if(haciaX < 0 || haciaX > 7 || desdeX < 0 || desdeX > 7 || haciaX < 0 || haciaX > 7 || desdeY <0 || desdeY > 7) {
             return false;
+        }
+        if (jugador.getMiTurno() == false){
+            return false;
+        }
         return true;
     }
 
