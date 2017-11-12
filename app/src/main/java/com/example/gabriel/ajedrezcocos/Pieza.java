@@ -1,6 +1,5 @@
 package com.example.gabriel.ajedrezcocos;
 
-
 import android.util.Log;
 
 import org.cocos2d.nodes.Sprite;
@@ -43,10 +42,14 @@ public class Pieza {
         if(haciaX == desdeX && haciaY == desdeY) {
             return false; //no se puede no mover
         }
-        if(haciaX < 0 || haciaX > 7 || desdeX < 0 || desdeX > 7 || haciaX < 0 || haciaX > 7 || desdeY <0 || desdeY > 7) {
+        if(haciaX < 0 || haciaX > 7 || desdeX < 0 || desdeX > 7) {
             return false;
         }
         if (jugador.getMiTurno() == false){
+            return false;
+        }
+        if (jugador.getPiezas().contains(tablero.getLugar(haciaX,haciaY).pieza)){
+            Log.d("movidaValida" , "es una movida invalida porque trato de mover la pieza en un lugar donde ya tenia otra suya");
             return false;
         }
         return true;

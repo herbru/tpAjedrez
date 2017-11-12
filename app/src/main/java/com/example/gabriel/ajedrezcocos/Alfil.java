@@ -14,7 +14,7 @@ public class Alfil extends Pieza {
             return false;
         }
 
-        if(haciaX - desdeX == haciaY - desdeY) {
+        if(Math.abs(haciaX - desdeX) == Math.abs(haciaY - desdeY)) {
             return true;
         }
         return false;

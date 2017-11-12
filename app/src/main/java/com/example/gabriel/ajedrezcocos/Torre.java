@@ -12,6 +12,7 @@ public class Torre extends Pieza{
 
     @Override
     public boolean movidaValida(Tablero tablero, int desdeX, int desdeY, int haciaX, int haciaY, Jugador jugador) {
+        boolean saltioPiezas = false;
         if(super.movidaValida(tablero, desdeX, desdeY, haciaX, haciaY, jugador) == false) {
             return false;
         }
@@ -21,6 +22,7 @@ public class Torre extends Pieza{
         if(haciaY == haciaY) {
             return true;
         }
+
         return false;
     }
 }

@@ -61,4 +61,11 @@ public class Jugador {
             }
 
     }
+
+    public boolean ExistePiezaJugador(Pieza pieza){
+        if (arrayPiezasJugador.contains(pieza)){
+            return true;
+        }
+        return false;
+    }
 }

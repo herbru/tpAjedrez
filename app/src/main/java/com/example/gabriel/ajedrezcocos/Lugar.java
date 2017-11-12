@@ -32,9 +32,8 @@ public class Lugar {
         return false;
     }
 
-    public Pieza liberarLugar() {
+    public void liberarLugar() {
         Pieza piezaComida = this.pieza;
         this.pieza = null;
-        return piezaComida;
     }
 }

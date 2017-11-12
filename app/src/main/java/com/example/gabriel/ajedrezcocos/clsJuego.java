@@ -3,6 +3,7 @@ package com.example.gabriel.ajedrezcocos;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import org.cocos2d.actions.interval.MoveTo;
 import org.cocos2d.actions.interval.RotateBy;
 import org.cocos2d.actions.interval.ScaleBy;
 import org.cocos2d.layers.Layer;
@@ -94,7 +95,7 @@ public class clsJuego {
                 Log.d("PonerImagenesTablero" , "complete una columna");
                 for(int j=0; j<tablero.matrizLugares.length; j++){
                     Log.d("PonerImagenesTablero" , "agrando el sprite dentro del objeto Lugar para que ocupe 1/8 del ancho");
-                    tablero.matrizLugares[i][j].sprite.runAction(ScaleBy.action(0.01f, FactorAncho, FactorAncho));
+                    tablero.matrizLugares[i][j].sprite.runAction(ScaleBy.action(0.01f, FactorAncho));
                     Log.d("PonerImagenesTablero" , "pongo el sprite en su posicion");
                     tablero.matrizLugares[i][j].sprite.setPosition(i*ladoLugar + primerPiezaX, j*ladoLugar + primerPiezaY);
                     Log.d("PonerImagenesTablero" , "agrego el sprite a la capa");
@@ -107,32 +108,66 @@ public class clsJuego {
     class CapaPiezas extends Layer {
         private int desdeX;
         private int desdeY;
+        private Jugador jugadorMueve;
+        private Jugador jugadorEspera;
         @Override
         public boolean ccTouchesBegan(MotionEvent event) {
-            if (event.getX() > tablero.getLugar(0,0).sprite.getPositionX() && PantallaDelDispositivo.getHeight() - event.getY() > tablero.getLugar(0,0).sprite.getPositionY()) {
-                desdeX = (int) Math.floor(event.getX() / ladoLugar);
-                desdeY = (int) Math.floor((PantallaDelDispositivo.getHeight() - event.getY()) / ladoLugar);
-                Log.d("cctouchesbegan", ""+desdeX);
-                Log.d("cctouchesbegan" , ""+desdeY);
+            desdeX = (int) Math.floor(event.getX()  / ladoLugar);
+            //deltaX -->(lugar de toque - punta inferior izquierda del tablero) /ladolugar = DesdeY
+            desdeY = (int) Math.floor(((PantallaDelDispositivo.getHeight() - event.getY()) - (tablero.getLugar(0,0).sprite.getPositionY() - (tablero.getLugar(0,0).sprite.getHeight()/2))) / ladoLugar);
+            desdeY --;
+            Log.d("cctouchesbegan", "desdex"+desdeX);
+            Log.d("cctouchesbegan" , "desdey"+desdeY);
+            if (tablero.getLugar(desdeX, desdeY).estaOcupado() == true) {
+                if (jugadorBlancas.ExistePiezaJugador(tablero.getLugar(desdeX, desdeY).pieza)) {
+                    jugadorMueve = jugadorBlancas;
+                    jugadorEspera = jugadorNegras;
+                } else {
+                    jugadorMueve = jugadorNegras;
+                    jugadorEspera = jugadorBlancas;
+                }
             }
             return true;
         }
         @Override
         public boolean ccTouchesMoved(MotionEvent event){
-            tablero.getLugar(desdeX,desdeY).pieza.getSprite().setPosition(event.getX(), PantallaDelDispositivo.getHeight() - event.getY());
+            if (tablero.getLugar(desdeX, desdeY).estaOcupado() == true){
+                tablero.getLugar(desdeX,desdeY).pieza.getSprite().setPosition(event.getX(), PantallaDelDispositivo.getHeight() - event.getY());
+            }
             return true;
         }
 
         @Override public boolean ccTouchesEnded (MotionEvent event){
-            if (event.getX() > tablero.getLugar(0,0).sprite.getPositionX() && PantallaDelDispositivo.getHeight() - event.getY() > tablero.getLugar(0,0).sprite.getPositionY())
-            {
-                int HaciaX = (int) Math.floor(event.getX() / ladoLugar);
-                int HaciaY = (int) Math.floor((PantallaDelDispositivo.getHeight() - event.getY()) / ladoLugar);
 
-                if (InterseccionEntreSprites(tablero.getLugar(desdeX,desdeY).pieza.getSprite(), tablero.getLugar(HaciaX, HaciaY).sprite)) {
-                    if (tablero.getLugar(desdeX, desdeY).pieza.movidaValida(tablero, desdeX, desdeY, HaciaX, HaciaY,jugadorBlancas )) {
-                        tablero.getLugar(HaciaX, HaciaY).OcuparLugar(tablero.getLugar(desdeX,desdeY).pieza);
+            if (tablero.getLugar(desdeX, desdeY).estaOcupado() == true) {
+                Pieza piezaMovida = tablero.getLugar(desdeX, desdeY).pieza;
+                if (PantallaDelDispositivo.getHeight() - event.getY() > tablero.getLugar(0, 0).sprite.getPositionY() - tablero.getLugar(0, 0).sprite.getHeight() / 2) {
+                    int HaciaX = (int) Math.floor(event.getX() / ladoLugar);
+                    int HaciaY = (int) Math.floor(((PantallaDelDispositivo.getHeight() - event.getY()) - (tablero.getLugar(0, 0).sprite.getPositionY() - (tablero.getLugar(0, 0).sprite.getHeight() / 2))) / ladoLugar);
+                    Log.d("ccTouchesEnded", "haciax" + HaciaX + " haciay" + HaciaY);
+                    if (InterseccionEntreSprites(tablero.getLugar(desdeX, desdeY).pieza.getSprite(), tablero.getLugar(HaciaX, HaciaY).sprite)) {
+                        if (tablero.getLugar(desdeX, desdeY).pieza.movidaValida(tablero, desdeX, desdeY, HaciaX, HaciaY, jugadorMueve)) {
+                            if (tablero.getLugar(HaciaX,HaciaY).estaOcupado() == true){
+                                tablero.getLugar(HaciaX,HaciaY).pieza.getSprite().runAction(MoveTo.action(0.1f, PantallaDelDispositivo.getWidth() + 50f, PantallaDelDispositivo.getHeight()/2));
+                            }
+                            else{
+                                tablero.getLugar(desdeX, desdeY).liberarLugar();
+                            }
+                            tablero.getLugar(HaciaX, HaciaY).OcuparLugar(piezaMovida);
+                            tablero.getLugar(HaciaX, HaciaY).pieza.getSprite().setPosition(tablero.getLugar(HaciaX, HaciaY).sprite.getPositionX(), tablero.getLugar(HaciaX, HaciaY).sprite.getPositionY());
+                            jugadorMueve.setMiTurno(false);
+                            jugadorEspera.setMiTurno(true);
+                        } else {
+                            Log.d("ccTouchesEnded", "devuelvo la pieza a su lugar porque la movida no es valida");
+                            tablero.getLugar(desdeX, desdeY).pieza.getSprite().setPosition(tablero.getLugar(desdeX, desdeY).sprite.getPositionX(), tablero.getLugar(desdeX, desdeY).sprite.getPositionY());
+                        }
+                    } else {
+                        Log.d("ccTouchesEnded", "devuelvo la pieza a su lugar porque la dejo en un lugar no valido");
+                        tablero.getLugar(desdeX, desdeY).pieza.getSprite().setPosition(tablero.getLugar(desdeX, desdeY).sprite.getPositionX(), tablero.getLugar(desdeX, desdeY).sprite.getPositionY());
                     }
+                } else {
+                    Log.d("ccTouchesEnded", "devuelvo la pieza a su lugar porque solto la pieza afuera del tablero");
+                    tablero.getLugar(desdeX, desdeY).pieza.getSprite().setPosition(tablero.getLugar(desdeX, desdeY).sprite.getPositionX(), tablero.getLugar(desdeX, desdeY).sprite.getPositionY());
                 }
             }
             return true;
@@ -151,7 +186,7 @@ public class clsJuego {
         public void PonerImagenPieza(int x , int y){
             Log.d("PonerImagenesTablero", "obtengo el factor por el que tengo que agrandar al sprite para que ocupe el 85% del ancho del lugar");
             Log.d("PonerImagenPieza", "ladolugar:"+ladoLugar+"ancho pieza:"+tablero.getLugar(x,y).pieza.getSprite().getWidth());
-            float FactorAncho = (ladoLugar * 0.85f) / (tablero.getLugar(x,y).pieza.getSprite().getWidth());
+            float FactorAncho = (ladoLugar * 0.75f) / (tablero.getLugar(x,y).pieza.getSprite().getWidth());
             Log.d("PonerImagenesTablero" , "factor"+FactorAncho);
             tablero.getLugar(x,y).pieza.getSprite().runAction(ScaleBy.action(0.01f, FactorAncho));
 

@@ -13,12 +13,12 @@ public class Caballo extends Pieza {
         if(super.movidaValida(tablero,desdeX, desdeY, haciaX, haciaY, jugador) == false) {
             return false;
         }
-
-        if(desdeX != desdeX - 1 && haciaX != desdeX + 1 && haciaX != desdeX + 2 && haciaX != desdeX - 2)
-            return false;
-        if(haciaY != desdeY - 2 && haciaY != desdeY + 2 && haciaY != desdeY - 1 && haciaY != desdeY + 1) {
-            return false;
+        if (Math.abs(desdeX-haciaX) == 1 && Math.abs(desdeY-haciaY) == 2){
+            return true;
         }
-        return true;
+        if (Math.abs(desdeX-haciaX) == 2 && Math.abs(desdeY-haciaY) == 1){
+            return true;
+        }
+        return false;
     }
 }
