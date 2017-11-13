@@ -42,7 +42,7 @@ public class Pieza {
         if(haciaX == desdeX && haciaY == desdeY) {
             return false; //no se puede no mover
         }
-        if(haciaX < 0 || haciaX > 7 || desdeX < 0 || desdeX > 7) {
+        if(haciaX < 0 || haciaX > 7 || desdeY < 0 || desdeY > 7) {
             return false;
         }
         if (jugador.getMiTurno() == false){

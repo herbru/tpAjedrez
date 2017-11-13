@@ -1,9 +1,6 @@
 package com.example.gabriel.ajedrezcocos;
-//// TODO: 12/11/2017 movimientos validos del rey 
-//// TODO: 12/11/2017 impedir salteo de piezas 
+//// TODO: 12/11/2017 impedir salteo de piezas
 import android.util.Log;
-
-import org.cocos2d.nodes.Sprite;
 
 public class Peon extends Pieza{
 
@@ -15,21 +12,45 @@ public class Peon extends Pieza{
     public boolean movidaValida(Tablero tablero, int desdeX, int desdeY, int haciaX, int haciaY, Jugador jugador) {
         Log.d("movidaValida" , "compruebo que la movida del peon sea valida");
         if(super.movidaValida(tablero,desdeX, desdeY, haciaX, haciaY, jugador) == false) {
+            Log.d("movidaValidaPeon" , "movida invalida de la clase Pieza");
             return false;
         }
-        if(haciaX == desdeX && tablero.getLugar(haciaX, haciaY).estaOcupado() == false && haciaY-desdeY == 1) {
-            return true;
-        }
-        if(haciaX - desdeX == haciaY - desdeY && Math.abs(haciaX-desdeX) == 1 && haciaY - desdeY == 1 && tablero.getLugar(haciaX, haciaY).estaOcupado() == true) {
-            return true;
-        }
+
         if (jugador.blanco == true){
-            if (desdeY == 1 && haciaY == 3){
+            if(haciaX == desdeX && tablero.getLugar(haciaX, haciaY).estaOcupado() == false && haciaY-desdeY == 1) {
+                Log.d("movidaValidaPeon" , "movio un peon blanco un casillero para adelante");
+                return true;
+            }
+
+            if(haciaX - desdeX == haciaY - desdeY && Math.abs(haciaX-desdeX) == 1 && haciaY - desdeY == 1 && tablero.getLugar(haciaX, haciaY).estaOcupado() == true) {
+                Log.d("movidaValidaPeon" , "comio con un peon blanco un casillero para adelante en diagonal");
+                return true;
+            }
+
+            if (desdeY == 1 && haciaY == 3 && desdeX == haciaX){
+                if (tablero.getLugar(desdeX,desdeY+1).estaOcupado() == true){
+                    Log.d("movidaValidaPeon" , "movida invalida porque el peon se salteo una pieza");
+                    return false;
+                }
+                Log.d("movidaValidaPeon" , "movio el peon blanco dos casilleros para adelante");
                 return  true;
             }
         }
         else{
-            if (desdeY == 6 && haciaY == 4){
+            if (desdeY == 6 && haciaY == 4 && desdeX == haciaX){
+                if (tablero.getLugar(desdeX,desdeY-1).estaOcupado() == true){
+                    Log.d("movidaValidaPeon" , "movida invalida porque el peon se salteo una pieza");
+                    return false;
+                }
+                Log.d("movidaValidaPeon" , "movio el peon negro dos casilleros para adelante");
+                return true;
+            }
+            if (haciaX == desdeX && tablero.getLugar(haciaX, haciaY).estaOcupado() == false && haciaY-desdeY == -1){
+                Log.d("movidaValidaPeon" , "movio un peon negro un casillero para adelante");
+                return  true;
+            }
+            if(haciaX - desdeX == haciaY - desdeY && Math.abs(haciaX-desdeX) == 1 && haciaY - desdeY == -1 && tablero.getLugar(haciaX, haciaY).estaOcupado() == true) {
+                Log.d("movidaValidaPeon" , "comio con un peon negro un casillero para adelante en diagonal");
                 return true;
             }
         }

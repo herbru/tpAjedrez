@@ -33,7 +33,6 @@ public class Lugar {
     }
 
     public void liberarLugar() {
-        Pieza piezaComida = this.pieza;
         this.pieza = null;
     }
 }
