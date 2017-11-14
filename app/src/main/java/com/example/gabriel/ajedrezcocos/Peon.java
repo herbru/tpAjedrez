@@ -1,5 +1,4 @@
 package com.example.gabriel.ajedrezcocos;
-//// TODO: 12/11/2017 impedir salteo de piezas
 import android.util.Log;
 
 public class Peon extends Pieza{

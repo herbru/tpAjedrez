@@ -2,8 +2,6 @@ package com.example.gabriel.ajedrezcocos;
 
 import android.util.Log;
 
-import org.cocos2d.nodes.Sprite;
-
 public class Alfil extends Pieza {
 
     public Alfil(int x, int y, String nombreArchivoImagen) {
@@ -12,11 +10,16 @@ public class Alfil extends Pieza {
 
     @Override
     public boolean movidaValida(Tablero tablero, int desdeX, int desdeY, int haciaX, int haciaY, Jugador jugador) {
+        Log.d("MovidaValida", "valido que la movida sea valida segun la clase Pieza");
         if(super.movidaValida(tablero,desdeX, desdeY, haciaX, haciaY, jugador) == false) {
             return false;
         }
 
+        Log.d("MovidaValida", "valido que deltay sea igual a deltax, osea que movio en diagonal");
         if(Math.abs(haciaX - desdeX) == Math.abs(haciaY - desdeY)) {
+            Log.d("movidaValida", "valido que no se saltee piezas");
+            Log.d("movidaValida", "recorro todos los lugares intermedios entre donde agarro la pieza y donde la solto" +
+                    " y compruebo que esos casilleros no tengan piezas");
             if (haciaX>desdeX){
                 if (haciaY>desdeY){
                     int j = desdeY;

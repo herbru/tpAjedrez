@@ -1,6 +1,6 @@
 package com.example.gabriel.ajedrezcocos;
 
-import org.cocos2d.nodes.Sprite;
+import android.util.Log;
 
 public class Caballo extends Pieza {
 
@@ -10,9 +10,11 @@ public class Caballo extends Pieza {
 
     @Override
     public boolean movidaValida(Tablero tablero, int desdeX, int desdeY, int haciaX, int haciaY, Jugador jugador) {
+        Log.d("MovidaValida", "valido que la movida sea valida segun la clase Pieza");
         if(super.movidaValida(tablero,desdeX, desdeY, haciaX, haciaY, jugador) == false) {
             return false;
         }
+        Log.d("MovidaValida", "valido que deltay = 2 y deltax = 1 || deltay = 1 y deltax = 2");
         if (Math.abs(desdeX-haciaX) == 1 && Math.abs(desdeY-haciaY) == 2){
             return true;
         }
@@ -22,3 +24,4 @@ public class Caballo extends Pieza {
         return false;
     }
 }
+

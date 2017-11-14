@@ -27,8 +27,9 @@ public class Lugar {
     }
 
     public boolean estaOcupado() {
-        if(pieza != null)
+        if(pieza != null) {
             return true;
+        }
         return false;
     }
 

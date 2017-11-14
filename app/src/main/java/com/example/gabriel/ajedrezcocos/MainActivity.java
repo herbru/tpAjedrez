@@ -1,12 +1,12 @@
 package com.example.gabriel.ajedrezcocos;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.WindowManager;
 
 import org.cocos2d.opengl.CCGLSurfaceView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     CCGLSurfaceView vistaPrincipal;
     @Override
